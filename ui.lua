@@ -952,8 +952,8 @@ function SnutzHub_Library:CreateWindow(Config)
 		BackgroundTransparency = 0.9990000128746033,
 		BorderColor3 = Color3.fromRGB(0, 0, 0),
 		BorderSizePixel = 0,
-		Position = UDim2.new(0, 0, 0, 4),
-		Size = UDim2.new(1, 0, 1, -8),
+		Position = UDim2.new(0, 0, 0,
+		Size = UDim2.new(1, 0, 1, -44),
 		Name = "ScrollTab",
 	}, LayersTab)
 
@@ -962,10 +962,278 @@ function SnutzHub_Library:CreateWindow(Config)
 		SortOrder = Enum.SortOrder.LayoutOrder,
 	}, ScrollTab)
 
+	local SearchTab = Custom:Create("Frame", {
+		AnchorPoint = Vector2.new(0.5, 0),
+		BackgroundColor3 = Custom.Surface2,
+		BackgroundTransparency = 0.16,
+		BorderSizePixel = 0,
+		Position = UDim2.new(0.5, 0, 0, 2),
+		Size = UDim2.new(1, -4, 0, 26),
+		Name = "SearchTab",
+	}, LayersTab)
+
+	Custom:Create("UICorner", {
+		CornerRadius = UDim.new(0, 6),
+	}, SearchTab)
+
+	Custom:Create("UIStroke", {
+		Color = Custom.ColorRGB,
+		Thickness = 1,
+		Transparency = 0.72,
+	}, SearchTab)
+
+	Custom:Create("ImageLabel", {
+		Image = "rbxassetid://3926305904",
+		ImageRectOffset = Vector2.new(964, 324),
+		ImageRectSize = Vector2.new(36, 36),
+		ImageColor3 = Color3.fromRGB(170, 170, 178),
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		AnchorPoint = Vector2.new(0, 0.5),
+		Position = UDim2.new(0, 7, 0.5, 0),
+		Size = UDim2.new(0, 14, 0, 14),
+		Name = "SearchIcon",
+	}, SearchTab)
+
+	local SearchBox = Custom:Create("TextBox", {
+		Font = Custom.Font,
+		PlaceholderText = "Search",
+		PlaceholderColor3 = Color3.fromRGB(140, 140, 148),
+		Text = "",
+		TextColor3 = Color3.fromRGB(235, 235, 240),
+		TextSize = 13,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		ClearTextOnFocus = false,
+		AnchorPoint = Vector2.new(1, 0.5),
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		Position = UDim2.new(1, -6, 0.5, 0),
+		Size = UDim2.new(1, -28, 1, 0),
+		Name = "SearchBox",
+	}, SearchTab)
+
+	local SearchRegistry = {}
+	local SearchRows = {}
+	local SearchMaxResults = 7
+	local SelectSearchEntry = nil
+	local RefreshSearchResults = nil
+
+	local SearchResults = Custom:Create("Frame", {
+		BackgroundColor3 = Custom.ObsidianMid,
+		BackgroundTransparency = 0.08,
+		BorderSizePixel = 0,
+		ClipsDescendants = true,
+		Position = UDim2.new(0, 2, 0, 31),
+		Size = UDim2.new(1, -4, 0, 0),
+		Visible = false,
+		ZIndex = 12,
+		Name = "SearchResults",
+	}, LayersTab)
+
+	Custom:Create("UICorner", {
+		CornerRadius = UDim.new(0, 6),
+	}, SearchResults)
+
+	Custom:Create("UIStroke", {
+		Color = Custom.ColorRGB,
+		Thickness = 1,
+		Transparency = 0.62,
+	}, SearchResults)
+
+	local SearchResultsList = Custom:Create("Frame", {
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		Position = UDim2.new(0, 4, 0, 4),
+		Size = UDim2.new(1, -8, 1, -8),
+		ZIndex = 13,
+		Name = "SearchResultsList",
+	}, SearchResults)
+
+	Custom:Create("UIListLayout", {
+		Padding = UDim.new(0, 3),
+		SortOrder = Enum.SortOrder.LayoutOrder,
+	}, SearchResultsList)
+
+	local NoSearchResults = Custom:Create("TextLabel", {
+		Font = Custom.Font,
+		Text = "No results found",
+		TextColor3 = Color3.fromRGB(170, 170, 178),
+		TextSize = 12,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		LayoutOrder = 99,
+		Size = UDim2.new(1, -10, 0, 28),
+		Visible = false,
+		ZIndex = 14,
+		Name = "NoSearchResults",
+	}, SearchResultsList)
+
+	for Index = 1, SearchMaxResults do
+		local Result = Custom:Create("Frame", {
+			BackgroundColor3 = Custom.Surface2,
+			BackgroundTransparency = 0.16,
+			BorderSizePixel = 0,
+			LayoutOrder = Index,
+			Size = UDim2.new(1, 0, 0, 34),
+			Visible = false,
+			ZIndex = 14,
+			Name = "SearchResult",
+		}, SearchResultsList)
+
+		Custom:Create("UICorner", {
+			CornerRadius = UDim.new(0, 5),
+		}, Result)
+
+		local ResultButton = Custom:Create("TextButton", {
+			Font = Custom.Font,
+			Text = "",
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Size = UDim2.new(1, 0, 1, 0),
+			ZIndex = 16,
+			Name = "SearchResultButton",
+		}, Result)
+
+		local ResultTitle = Custom:Create("TextLabel", {
+			Font = Custom.Font,
+			Text = "",
+			TextColor3 = Color3.fromRGB(238, 238, 242),
+			TextSize = 12,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			TextYAlignment = Enum.TextYAlignment.Top,
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Position = UDim2.new(0, 7, 0, 5),
+			Size = UDim2.new(1, -14, 0, 13),
+			ZIndex = 15,
+			Name = "SearchResultTitle",
+		}, Result)
+
+		local ResultMeta = Custom:Create("TextLabel", {
+			Font = Custom.FontBody,
+			Text = "",
+			TextColor3 = Color3.fromRGB(165, 165, 174),
+			TextSize = 11,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			TextYAlignment = Enum.TextYAlignment.Top,
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Position = UDim2.new(0, 7, 0, 18),
+			Size = UDim2.new(1, -14, 0, 12),
+			ZIndex = 15,
+			Name = "SearchResultMeta",
+		}, Result)
+
+		local RowData = {
+			Frame = Result,
+			Title = ResultTitle,
+			Meta = ResultMeta,
+			Entry = nil,
+		}
+
+		ResultButton.Activated:Connect(function()
+			if RowData.Entry and SelectSearchEntry then
+				SelectSearchEntry(RowData.Entry)
+			end
+		end)
+
+		SearchRows[Index] = RowData
+	end
+
+	local function NormalizeSearchText(Text)
+		Text = tostring(Text or "")
+		Text = Text:gsub("%[", ""):gsub("%]", "")
+		Text = Text:gsub("^%s+", ""):gsub("%s+$", "")
+		return string.lower(Text)
+	end
 
 	local function RegisterSearchEntry(Entry)
-		return Entry
+		if not Entry or not Entry.Instance then
+			return
+		end
+		Entry.Title = tostring(Entry.Title or "")
+		if Entry.Title == "" then
+			return
+		end
+		Entry.Type = tostring(Entry.Type or "")
+		Entry.Tab = tostring(Entry.Tab or "")
+		Entry.Section = tostring(Entry.Section or "")
+		Entry.SearchText =
+			NormalizeSearchText(Entry.Title .. " " .. Entry.Type .. " " .. Entry.Tab .. " " .. Entry.Section)
+		table.insert(SearchRegistry, Entry)
+
+		if SafeGet(SearchBox, "Text", "") ~= "" and RefreshSearchResults then
+			RefreshSearchResults()
+		end
 	end
+
+	RefreshSearchResults = function()
+		local Query = NormalizeSearchText(SafeGet(SearchBox, "Text", ""))
+		local HasQuery = Query ~= ""
+
+		SearchResults.Visible = HasQuery
+		ScrollTab.Visible = not HasQuery
+
+		if not HasQuery then
+			for _, Row in ipairs(SearchRows) do
+				Row.Entry = nil
+				Row.Frame.Visible = false
+			end
+
+			NoSearchResults.Visible = false
+			SearchResults.Size = UDim2.new(1, -4, 0, 0)
+			return
+		end
+
+		local ResultCount = 0
+
+		local function PushResult(Entry)
+			if string.find(Entry.SearchText, Query, 1, true) then
+				ResultCount += 1
+
+				if ResultCount <= SearchMaxResults then
+					local Row = SearchRows[ResultCount]
+					Row.Entry = Entry
+					Row.Frame.Visible = true
+					Row.Title.Text = Entry.Title
+					Row.Meta.Text = (Entry.Section ~= "" and Entry.Section or Entry.Tab) .. " - " .. Entry.Type
+				end
+			end
+		end
+
+		for _, Entry in ipairs(SearchRegistry) do
+			if Entry.Type ~= "Section" then
+				PushResult(Entry)
+				if ResultCount >= SearchMaxResults then
+					break
+				end
+			end
+		end
+
+		if ResultCount < SearchMaxResults then
+			for _, Entry in ipairs(SearchRegistry) do
+				if Entry.Type == "Section" then
+					PushResult(Entry)
+					if ResultCount >= SearchMaxResults then
+						break
+					end
+				end
+			end
+		end
+
+		for Index = ResultCount + 1, SearchMaxResults do
+			local Row = SearchRows[Index]
+			Row.Entry = nil
+			Row.Frame.Visible = false
+		end
+
+		NoSearchResults.Visible = ResultCount == 0
+		SearchResults.Size = ResultCount == 0 and UDim2.new(1, -4, 0, 40)
+			or UDim2.new(1, -4, 0, (math.min(ResultCount, SearchMaxResults) * 37) + 8)
+	end
+
+	SearchBox:GetPropertyChangedSignal("Text"):Connect(RefreshSearchResults)
 
 	local UpdateSizeQueued = false
 	local function UpdateSize()
@@ -1292,11 +1560,14 @@ function SnutzHub_Library:CreateWindow(Config)
 		end)
 	end
 
-	local function SelectSearchEntry(Entry)
+	SelectSearchEntry = function(Entry)
 		if not Entry then
 			return
 		end
 
+		TrySet(SearchBox, { Text = "" })
+		SearchResults.Visible = false
+		ScrollTab.Visible = true
 		SwitchTab(Entry.Tab)
 
 		if Entry.OpenSection then
