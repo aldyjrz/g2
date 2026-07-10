@@ -952,7 +952,7 @@ function SnutzHub_Library:CreateWindow(Config)
 		BackgroundTransparency = 0.9990000128746033,
 		BorderColor3 = Color3.fromRGB(0, 0, 0),
 		BorderSizePixel = 0,
-		Position = UDim2.new(0, 0, 0,
+		Position = UDim2.new(0, 0, 0, 34),
 		Size = UDim2.new(1, 0, 1, -44),
 		Name = "ScrollTab",
 	}, LayersTab)
@@ -2068,7 +2068,7 @@ function SnutzHub_Library:CreateWindow(Config)
 
 				local SubSectionTitle = Custom:Create("TextLabel", {
 					Font = Custom.Font,
-					Text = "- " .. Title .. " -",
+					Text = "- [ " .. Title .. " ] -",
 					TextColor3 = Color3.fromRGB(230, 230, 235),
 					TextSize = 12,
 					TextXAlignment = Enum.TextXAlignment.Left,
@@ -2085,7 +2085,7 @@ function SnutzHub_Library:CreateWindow(Config)
 					local NewTitle = type(Config) == "table" and (Config[1] or Config.Title) or Config
 					NewTitle = tostring(NewTitle or ""):gsub("^%s+", ""):gsub("%s+$", "")
 					Title = NewTitle
-					SubSectionTitle.Text = NewTitle == "" and "" or "- " .. NewTitle .. " -"
+					SubSectionTitle.Text = NewTitle == "" and "" or "- [ " .. NewTitle .. " ] -"
 				end
 
 				ItemCount += 1
