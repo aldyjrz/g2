@@ -176,7 +176,7 @@ local function OpenClose()
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0.1021, 0, 0.0743, 0),
 		Size = UDim2.new(0, 50, 0, 50),
-		Image = "rbxassetid://117265667838927",
+		Image = "rbxassetid://133600814745839",
 		Visible = false,
 	}, ScreenGui)
 
@@ -614,7 +614,7 @@ function SnutzHub_Library:CreateWindow(Config)
 	local SizeUi = Config[4] or Config.SizeUi or UDim2.fromOffset(580, 380)
 	local DiscordInvite = Config.Discord or Config[5] or "discord.gg/SnutzHubx"
 	local DiscordLogo = Config.DiscordIcon or Config[6] or "rbxassetid://94434236999817"
-	local HubLogo = Config.Logo or Config.TitleLogo or "rbxassetid://105006444774299"
+	local HubLogo = Config.Logo or Config.TitleLogo or "rbxassetid://133600814745839"
 	local HubLogoSize = Config.LogoSize or 24
 	local HubLogoColor = Config.LogoColor or Color3.fromRGB(255, 255, 255)
 
