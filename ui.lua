@@ -1234,7 +1234,10 @@ function SnutzHub_Library:CreateWindow(Config)
 	end
 
 	SearchBox:GetPropertyChangedSignal("Text"):Connect(RefreshSearchResults)
-
+	SearchTab.Visible = false
+	SearchResults.Visible = false
+	
+	SearchTab.Size = UDim2.new(1, -4, 0, 0)
 	local UpdateSizeQueued = false
 	local function UpdateSize()
 		UpdateSizeQueued = false
@@ -1493,7 +1496,7 @@ function SnutzHub_Library:CreateWindow(Config)
 		TabState.ChooseFrame.Size = IsActive and UDim2.new(0, 2, 0, 14) or UDim2.new(0, 0, 0, 0)
 
 		SafeTween(TabState.Tab, Tween, {
-			BackgroundColor3 = IsActive and Color3.fromRGB(48, 24, 70) or Color3.fromRGB(255, 255, 255),
+			BackgroundColor3 = IsActive and Color3.fromRGB(24, 150, 74) or Color3.fromRGB(255, 255, 255),
 			BackgroundTransparency = IsActive and 0.12 or 0.999,
 		})
 
@@ -2948,7 +2951,7 @@ function SnutzHub_Library:CreateWindow(Config)
 					BorderColor3 = Color3.fromRGB(0, 0, 0),
 					BorderSizePixel = 0,
 					Position = UDim2.new(1, -7, 0, BaseHeight / 2),
-					Size = UDim2.new(0, 148, 0, 30),
+					Size = UDim2.new(0, 155, 0, 40),
 					ZIndex = 4,
 					Name = "SelectOptionsFrame",
 					LayoutOrder = CountDropdown,
@@ -3040,7 +3043,7 @@ function SnutzHub_Library:CreateWindow(Config)
 					Dropdown.Size = UDim2.new(1, 0, 0, BaseHeight)
 					SelectOptionsFrame.Position = UDim2.new(1, -7, 0, BaseHeight / 2)
 					DropdownButton.Position = UDim2.new(1, -7, 0, BaseHeight / 2)
-					DropdownButton.Size = UDim2.new(0, 148, 0, 30)
+					DropdownButton.Size = UDim2.new(0, 150, 0, 40)
 
 					UpdatePopupPosition()
 
@@ -3092,7 +3095,7 @@ function SnutzHub_Library:CreateWindow(Config)
 									Option,
 									TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
 									{
-										BackgroundColor3 = Selected and Color3.fromRGB(48, 24, 70) or Custom.Surface3,
+										BackgroundColor3 = Selected and Color3.fromRGB(24, 150, 74) or Custom.Surface3,
 										BackgroundTransparency = Selected and 0.08 or 0.999,
 									}
 								)
@@ -3128,7 +3131,7 @@ function SnutzHub_Library:CreateWindow(Config)
 							local Selected = table.find(Funcs_Dropdown.Value, OptionName) ~= nil
 
 							local Option = Custom:Create("Frame", {
-								BackgroundColor3 = Selected and Color3.fromRGB(48, 24, 70) or Custom.Surface3,
+								BackgroundColor3 = Selected and Color3.fromRGB(24, 150, 74) or Custom.Surface3,
 								BackgroundTransparency = Selected and 0.08 or 0.999,
 								BorderColor3 = Color3.fromRGB(0, 0, 0),
 								BorderSizePixel = 0,
